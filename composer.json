@@ -1,0 +1,26 @@
+{
+    "name": "balfour/eloquent-dynamic-relationships",
+    "description": "A library for monkey patching relationships between Eloquent models at runtime",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthew Goslett",
+            "email": "matthew@masterstart.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Balfour\\EloquentDynamicRelationships\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
