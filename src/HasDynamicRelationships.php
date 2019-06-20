@@ -19,7 +19,7 @@ trait HasDynamicRelationships
      */
     public static function bond($related, callable $resolver)
     {
-        static::$bonds[$related] = $resolver;
+        static::$bonds[get_called_class()][$related] = $resolver;
     }
 
     /**
@@ -27,7 +27,9 @@ trait HasDynamicRelationships
      */
     public static function breakup($related)
     {
-        unset(static::$bonds[$related]);
+        if (static::isBondedWith($related)) {
+            unset(static::$bonds[get_called_class()][$related]);
+        }
     }
 
     /**
@@ -35,7 +37,7 @@ trait HasDynamicRelationships
      */
     public static function getBonds()
     {
-        return static::$bonds;
+        return static::$bonds[get_called_class()] ?? [];
     }
 
     /**
@@ -44,7 +46,9 @@ trait HasDynamicRelationships
      */
     public static function isBondedWith($related)
     {
-        return isset(static::$bonds[$related]);
+        $bonds = static::getBonds();
+
+        return isset($bonds[$related]);
     }
 
     /**
@@ -53,14 +57,14 @@ trait HasDynamicRelationships
      */
     public static function getBondResolver($related)
     {
-        if (!isset(static::$bonds[$related])) {
+        if (!static::isBondedWith($related)) {
             throw new UnexpectedValueException(sprintf(
                 'The relationship "%s" is not bonded with this entity.',
                 $related
             ));
         }
 
-        return static::$bonds[$related];
+        return static::$bonds[get_called_class()][$related];
     }
 
     /**
